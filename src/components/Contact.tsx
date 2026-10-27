@@ -12,6 +12,7 @@ import {
 import { Language, PortfolioProfile } from '../types/portfolio';
 import { UI_TRANSLATIONS } from '../data/translations';
 import { validateContactForm, buildMailtoUrl } from '../utils/i18n';
+import { GeometricSection } from './GeometricSection';
 
 interface ContactProps {
   profile: PortfolioProfile;
@@ -69,7 +70,7 @@ export const Contact: React.FC<ContactProps> = ({ profile, lang, onCopyText }) =
   };
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-[#0B0D0E] border-b border-[#2A2E2B] relative">
+    <GeometricSection id="contact" className="py-20 md:py-28 bg-transparent border-b border-[#2A2E2B]/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Tag & Heading */}
@@ -332,6 +333,6 @@ export const Contact: React.FC<ContactProps> = ({ profile, lang, onCopyText }) =
 
         </div>
       </div>
-    </section>
+    </GeometricSection>
   );
 };

@@ -80,3 +80,10 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #C8FF00;
 }
+
+/* Circuit Running Electricity Animation */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -120;
+  }
+}

@@ -1,31 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Sliders, Globe, ArrowUpRight } from 'lucide-react';
 import { Language } from '../types/portfolio';
 import { UI_TRANSLATIONS } from '../data/translations';
 
 interface HeaderProps {
   lang: Language;
+  activeSection?: string;
   onLanguageChange: (newLang: Language) => void;
   onOpenCustomizer: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   lang,
+  activeSection = '',
   onLanguageChange,
   onOpenCustomizer,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const t = UI_TRANSLATIONS.nav;
 
+  // Native high-performance scroll reading progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollHeight > 0) {
+        setScrollProgress(Math.min(1, Math.max(0, window.scrollY / scrollHeight)));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const navLinks = [
-    { href: '#about', label: t.about[lang] },
-    { href: '#skills', label: t.skills[lang] },
-    { href: '#projects', label: t.projects[lang] },
-    { href: '#contact', label: t.contact[lang] },
+    { id: 'about', href: '#about', label: t.about[lang] },
+    { id: 'skills', href: '#skills', label: t.skills[lang] },
+    { id: 'projects', href: '#projects', label: t.projects[lang] },
+    { id: 'contact', href: '#contact', label: t.contact[lang] },
   ];
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[#0B0D0E]/85 border-b border-[#2A2E2B] transition-colors">
+      {/* Laser-thin Geometric Scroll Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] overflow-hidden pointer-events-none">
+        <div
+          style={{ transform: `scaleX(${scrollProgress})`, transformOrigin: 'left center' }}
+          className="w-full h-full bg-gradient-to-r from-[#C8FF00] via-[#C8FF00] to-[#e6ff80] shadow-sm shadow-[#C8FF00]/50 transition-transform duration-75 ease-out"
+        />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Wordmark */}
         <a
@@ -50,17 +75,31 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </a>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation with Active Scroll-Spy Highlighting */}
         <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium text-[#A6AAA5] hover:text-[#F4F5F2] hover:border-b-2 hover:border-[#C8FF00] py-1 transition-all ${lang === 'my' ? 'font-myanmar' : ''}`}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`relative text-sm font-medium py-1 transition-all flex items-center gap-1.5 ${
+                  isActive
+                    ? 'text-[#C8FF00] font-semibold'
+                    : 'text-[#A6AAA5] hover:text-[#F4F5F2]'
+                } ${lang === 'my' ? 'font-myanmar' : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {isActive && (
+                  <span className="w-1.5 h-1.5 rounded-none rotate-45 bg-[#C8FF00] animate-pulse" />
+                )}
+                <span>{link.label}</span>
+                {isActive && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#C8FF00] transition-all" />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Right Actions: Language Switcher, Customizer & Let's Talk CTA */}
@@ -147,16 +186,24 @@ export const Header: React.FC<HeaderProps> = ({
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#141719] border-b border-[#2A2E2B] px-4 pt-3 pb-6 space-y-4 animate-in fade-in slide-in-from-top-4">
           <nav className="flex flex-col space-y-3" aria-label="Mobile Navigation">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-medium text-[#F4F5F2] hover:text-[#C8FF00] py-2 border-b border-[#2A2E2B]/50 transition-colors font-myanmar"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`text-base font-medium py-2 border-b border-[#2A2E2B]/50 transition-colors flex items-center justify-between font-myanmar ${
+                    isActive ? 'text-[#C8FF00]' : 'text-[#F4F5F2] hover:text-[#C8FF00]'
+                  }`}
+                >
+                  <span>{link.label}</span>
+                  {isActive && (
+                    <span className="w-2 h-2 rounded-none rotate-45 bg-[#C8FF00]" />
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="pt-2 flex flex-col gap-3">

@@ -3,6 +3,7 @@ import { Layers, Terminal, Wrench, ShieldCheck, Check } from 'lucide-react';
 import { Language, SkillCategory } from '../types/portfolio';
 import { UI_TRANSLATIONS } from '../data/translations';
 import { getLocalized } from '../utils/i18n';
+import { GeometricSection } from './GeometricSection';
 
 interface SkillsProps {
   categories: SkillCategory[];
@@ -15,7 +16,7 @@ export const Skills: React.FC<SkillsProps> = ({ categories, lang }) => {
   const categoryIcons = [Layers, Terminal, Wrench, ShieldCheck];
 
   return (
-    <section id="skills" className="py-20 md:py-28 bg-[#0B0D0E] border-b border-[#2A2E2B] relative">
+    <GeometricSection id="skills" className="py-20 md:py-28 bg-transparent border-b border-[#2A2E2B]/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Tag & Heading */}
@@ -85,6 +86,6 @@ export const Skills: React.FC<SkillsProps> = ({ categories, lang }) => {
         </div>
 
       </div>
-    </section>
+    </GeometricSection>
   );
 };

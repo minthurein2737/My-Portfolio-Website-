@@ -15,6 +15,9 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { CustomizerModal } from './components/CustomizerModal';
 import { Toast } from './components/Toast';
+import { ScrollSpyIndicator } from './components/ScrollSpyIndicator';
+import { LedDotsBackground } from './components/LedDotsBackground';
+import { useScrollSpy } from './hooks/useScrollSpy';
 
 export default function App() {
   // Initial language must be Myanmar ('my') as requested
@@ -36,6 +39,9 @@ export default function App() {
   const [isCustomizerOpen, setIsCustomizerOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>('');
   const [isToastOpen, setIsToastOpen] = useState<boolean>(false);
+
+  // Scroll spy active section tracker
+  const activeSection = useScrollSpy(['about', 'skills', 'projects', 'contact'], 180);
 
   // Sync document language attribute
   useEffect(() => {
@@ -85,13 +91,20 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#0B0D0E] text-[#F4F5F2] flex flex-col font-sans selection:bg-[#C8FF00] selection:text-[#0B0D0E] ${lang === 'my' ? 'font-myanmar' : ''}`}>
-      {/* Top Sticky Header */}
+    <div className={`relative min-h-screen bg-[#0B0D0E] text-[#F4F5F2] flex flex-col font-sans selection:bg-[#C8FF00] selection:text-[#0B0D0E] ${lang === 'my' ? 'font-myanmar' : ''}`}>
+      {/* Full-Website Running LED Dots & Electric Sparks Background */}
+      <LedDotsBackground />
+
+      {/* Top Sticky Header with Active Section and Reading Progress */}
       <Header
         lang={lang}
+        activeSection={activeSection}
         onLanguageChange={handleLanguageChange}
         onOpenCustomizer={() => setIsCustomizerOpen(true)}
       />
+
+      {/* Floating Geometric Scroll Spy Indicator (Desktop) */}
+      <ScrollSpyIndicator activeSection={activeSection} lang={lang} />
 
       {/* Main Content Sections */}
       <main className="flex-1">

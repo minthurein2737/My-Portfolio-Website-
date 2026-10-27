@@ -4,6 +4,7 @@ import { Project, Language } from '../types/portfolio';
 import { UI_TRANSLATIONS } from '../data/translations';
 import { getLocalized, filterProjects } from '../utils/i18n';
 import { ProjectModal } from './ProjectModal';
+import { GeometricSection } from './GeometricSection';
 
 interface ProjectsProps {
   projects: Project[];
@@ -29,7 +30,7 @@ export const Projects: React.FC<ProjectsProps> = ({
   const filtered = filterProjects(projects, activeCategory);
 
   return (
-    <section id="projects" className="py-20 md:py-28 bg-[#0B0D0E] border-b border-[#2A2E2B] relative">
+    <GeometricSection id="projects" className="py-20 md:py-28 bg-transparent border-b border-[#2A2E2B]/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Tag & Heading */}
@@ -163,6 +164,6 @@ export const Projects: React.FC<ProjectsProps> = ({
           onClose={() => setSelectedProject(null)}
         />
       </div>
-    </section>
+    </GeometricSection>
   );
 };

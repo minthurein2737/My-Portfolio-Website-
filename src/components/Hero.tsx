@@ -10,6 +10,7 @@ import {
 import { Language, PortfolioProfile } from '../types/portfolio';
 import { UI_TRANSLATIONS } from '../data/translations';
 import { getLocalized } from '../utils/i18n';
+import { CircuitPortrait } from './CircuitPortrait';
 
 interface HeroProps {
   profile: PortfolioProfile;
@@ -48,7 +49,7 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* Left Column: Editorial Typography & Copy */}
-          <div className="lg:col-span-7 flex flex-col space-y-6">
+          <div className="lg:col-span-6 flex flex-col space-y-6">
             
             {/* Availability & Location Status Pill */}
             <div className="inline-flex items-center gap-3 self-start px-3.5 py-1.5 bg-[#141719] border border-[#2A2E2B] clip-badge">
@@ -134,56 +135,15 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Prominent Rectangular Box Framed Portrait (လေးထောင့်ကွက်) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <div className="relative w-full max-w-[360px] sm:max-w-[420px] aspect-[4/5] p-3">
-              
-              {/* Outer Cybernetic Rectangular Frame & Corner Brackets */}
-              <div className="absolute inset-0 border border-[#2A2E2B] bg-[#141719]/40 pointer-events-none" />
-              
-              {/* High-Tech Corner Ticks */}
-              <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-[#C8FF00]" />
-              <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-[#C8FF00]" />
-              <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-[#C8FF00]" />
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-[#C8FF00]" />
-
-              {/* Central Rectangular Frame Container (လေးထောင့်ကွက်) */}
-              <div className="relative w-full h-full bg-[#141719] border-2 border-[#2A2E2B] group-hover:border-[#C8FF00]/60 transition-colors overflow-hidden shadow-2xl shadow-black/80 group">
-                
-                {/* Fallback pattern in case image is loading */}
-                <div className="absolute inset-0 bg-[#141719] flex items-center justify-center text-[#A6AAA5] font-mono-tech text-xs">
-                  <div className="text-center p-4">
-                    <Sparkles className="w-8 h-8 text-[#C8FF00] mx-auto mb-2 opacity-50 animate-pulse" />
-                    <span>MIN THUREIN // PORTRAIT</span>
-                  </div>
-                </div>
-
-                {/* Actual Portrait Image (Photo 2) */}
-                <img
-                  src={currentPortrait.url}
-                  alt={getLocalized(currentPortrait.alt, lang)}
-                  className="relative z-10 w-full h-full object-cover object-center filter contrast-105 saturate-[0.95] group-hover:scale-105 transition-transform duration-500"
-                  loading="eager"
-                />
-
-                {/* Subtle dark-gradient overlay at base for contrast */}
-                <div className="absolute inset-0 z-20 bg-gradient-to-t from-[#0B0D0E]/60 via-transparent to-transparent pointer-events-none" />
-
-                {/* Cyber HUD subtle grid lines */}
-                <div className="absolute inset-0 z-20 bg-grid-pattern opacity-25 pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Portrait Meta Tag */}
-            <div className="mt-4 flex items-center gap-3">
-              <div className="flex items-center gap-2 px-4 py-2 bg-[#141719] border border-[#2A2E2B] clip-chamfer text-xs text-[#F4F5F2]">
-                <div className="w-1.5 h-1.5 bg-[#C8FF00] rounded-full animate-pulse" />
-                <span className="font-semibold font-myanmar">{getLocalized(profile.name, lang)}</span>
-                <span className="text-[#A6AAA5] font-mono-tech text-[10px]">
-                  // {getLocalized(profile.title, lang)}
-                </span>
-              </div>
-            </div>
+          {/* Right Column: High-tech Motherboard Circuit with Portrait on Snapdragon Socket */}
+          <div className="lg:col-span-6 flex flex-col items-center justify-center">
+            <CircuitPortrait
+              portraitUrl={currentPortrait.url}
+              portraitAlt={currentPortrait.alt}
+              name={profile.name}
+              title={profile.title}
+              lang={lang}
+            />
           </div>
 
         </div>
